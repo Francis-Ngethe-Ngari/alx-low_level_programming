@@ -10,8 +10,8 @@ address of the second pointer, which points to the location of actual value.
 
 ### **Scripts**
 
-- ** 0-memset.c**
+#### **0-memset.c**
 
-- The above script contains a function *_memset which executes to fill memory with a constant byte.
+- The above script contains a function (*_memset) that executes to fill memory with a constant byte.
 
  
