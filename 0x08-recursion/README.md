@@ -9,7 +9,7 @@ Recursion code is shorter than iterative code however it is difficult to underst
 
 ### **TASKS**
 
-### ** C Scripts**
+### **C Scripts**
 #### **0-puts_recursion.c**
 
 - Write a function that prints a string, followed by a new line.
