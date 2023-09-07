@@ -4,6 +4,6 @@
 
 - The Functions used to complete the tasks contained in dir are:
 
-- **malloc()**
-- **free()**
-- **exit()**
+**malloc()**
+**free()**
+**exit()**
