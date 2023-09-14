@@ -2,7 +2,8 @@
 
 /**
  * print_Own_Opcodes - defined to print opcodes of
- * its own main function.
+ * its own main function.Opcodes should be in hexadecimal
+ * and in lowercase.
  *
  * @no_of_bytes: integer parameter which
  * specifies how many bytes of opcode to print.
@@ -27,7 +28,7 @@ void print_Own_Opcodes(int no_of_bytes)
 
 	while (itr < no_of_bytes)
 	{
-		printf("%02x", code[itr]);
+		printf("%02x", tolower(code[itr]));
 		itr++;
 	}
 	printf("\n");
