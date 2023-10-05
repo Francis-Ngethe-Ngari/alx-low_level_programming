@@ -1,7 +1,3 @@
-## **Learning C Programming Concepts**
+# **Introduction to C Programming Langauge**
 
-### **0x08.Recursion Intro**
-
-- Recursion is a method where a solution to a problem depends on solutions to smaller instances of the same problem.
-
-- A recursive function is a function that calls itself.
+## **Tasks to Handle**
