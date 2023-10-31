@@ -22,6 +22,9 @@ void exit_err(int exit_code, const char *f_str, const char *Arg)
 	exit(exit_code);
 }
 
+/**Function Signature**/
+int main(int argc, char *argv[]);
+
 /**
  * main - entry point.
  *
@@ -34,9 +37,6 @@ void exit_err(int exit_code, const char *f_str, const char *Arg)
  *
  */
 
-/**Function Signature**/
-int main(int argc, char *argv[]);
-
 int main(int argc, char *argv[])
 {
 	const char *src;
@@ -47,10 +47,7 @@ int main(int argc, char *argv[])
 	ssize_t bytes_scan;
 
 	if (argc != 3)
-	{
-		dprintf(STDERR_FILENO, "Usage: %s\n", argv[0]);
-		exit_err(97, "", "");
-	}
+		exit_err(97, "Usage: cp file_from file_to\n", argv[0]);
 
 	src = argv[1];
 	dest = argv[2];
