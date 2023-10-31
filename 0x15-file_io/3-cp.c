@@ -57,13 +57,13 @@ int main(int argc, char *argv[])
 
 	fd_src = open(src, O_RDONLY);
 	if (fd_src == -1)
-		exit_err(98, "Error: Can't read from file NAME_OF_THE_FILE%s\n", src);
+		exit_err(98, "Error: Can't read from file %s\n", src);
 
 	fd_dest = open(dest, O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	if (fd_dest == -1)
 	{
 		close(fd_src);
-		exit_err(99, "Error: Can't write to NAME_OF_THE_FILE%s\n", dest);
+		exit_err(99, "Error: Can't write to %s\n", dest);
 	}
 
 	while ((bytes_scan = read(fd_src, buff, BUFFER_SIZE)) > 0)
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 		{
 			close(fd_src);
 			close(fd_dest);
-			exit_err(99, "Error: Can't write to NAME_OF_THE_FILE%s\n", dest);
+			exit_err(99, "Error: Can't write to %s\n", dest);
 		}
 	}
 
@@ -82,14 +82,14 @@ int main(int argc, char *argv[])
 	{
 		close(fd_src);
 		close(fd_dest);
-		exit_err(98, "Error: Can't read from file NAME_OF_THE_FILE%s\n", src);
+		exit_err(98, "Error: Can't read from file %s\n", src);
 	}
 
 	if (close(fd_src) == -1)
-		exit_err(100, "Error: Can't close fd FD_VALUE%d\n", (const char *)&fd_src);
+		exit_err(100, "Error: Can't close fd %d\n", (const char *)&fd_src);
 
 	if (close(fd_dest) == -1)
-		exit_err(100, "Error: Can't close fd FD_VALUE%d\n", (const char *)&fd_dest);
+		exit_err(100, "Error: Can't close fd %d\n", (const char *)&fd_dest);
 
 	return (0);
 }
