@@ -47,7 +47,10 @@ int main(int argc, char *argv[])
 	ssize_t bytes_scan;
 
 	if (argc != 3)
-		exit_err(97, "Usage: %s file_from file_to\n", argv[0]);
+	{
+		dprintf(STDERR_FILENO, "Usage: %s file_from file_to\n", argv[0]);
+		exit_err(97, "", "");
+	}
 
 	src = argv[1];
 	dest = argv[2];
