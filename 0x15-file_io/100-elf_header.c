@@ -1,105 +1,85 @@
 #include "main.h"
 
 /**
- * exit_with_err- Function to print error message and exit
- * with status code 98
+ * ext_err- Function prints an exit msg and exit program
+ * with a specif exit code.
  *
- * @msg: pointer to const char character array which stores
- * the error.
+ * @msg: Pointer to character array (String) this the error
+ * message displayed in standard output.
  *
  * Return: Nothing.
  *
  */
-void exit_with_err(const char *msg)
+
+void ext_err(const char *msg)
 {
 	fprintf(stderr, "%s\n", msg);
 	exit(98);
 }
 
 /**
- * output_elf_hedr- Function to display ELF header information
+ * main- Starting point of program execution.
  *
- * @hedr: pointer to string to rep type of architecture:
- * 64-bit.
+ * @argc: param of type int which keeps track of
+ * number of arguements passed in command-line.
  *
- * Return: Nothing.
+ * @argv: Pointer to char array (String); in this
+ * case a file type of ELF.
  *
- */
-void output_elf_hedr(Elf32_Ehdr *hedr);
-
-void output_elf_hedr(Elf32_Ehdr *hedr)
-{
-	int itr = 0;
-
-	printf("ELF Header:\n");
-
-	/*Display the Magic*/
-	printf("  Magic:   ");
-	while (itr < 16)
-	{
-		printf("%02x ", hedr->e_ident[itr]);
-		itr++;
-	}
-	printf("\n");
-
-	/*Display Class*/
-	printf("  Class:%s\n", hedr->e_ident[EI_CLASS] == ELFCLASS32 ? "ELF32" : "ELF64");
-
-	/*Display Data*/
-	printf("  Data:%s\n", hedr->e_ident[EI_DATA] == ELFDATA2LSB ? "2's complement, little endian" : "2's complement, big endian");
-
-	/*Display Version*/
-	printf("  Version:%d (current)\n", hedr->e_ident[EI_VERSION]);
-
-	/*Display OS/ABI*/
-	printf("OS/ABI%s\n", hedr->e_ident[EI_OSABI] == ELFOSABI_SYSV ? "UNIX - System V" : "Other");
-
-	/*Display ABI Version*/
-	printf("  ABI Version:%d\n", hedr->e_ident[EI_ABIVERSION]);
-
-	/*Display Type*/
-	printf("Type:%s\n", hedr->e_type == ET_EXEC ? "EXEC (Executable file)" : "Other");
-
-	/*Display Entry point address*/
-	printf("  Entry point address:0x%x\n", hedr->e_entry);
-}
-
-/**
- * main- Entry point of function, execution begins here.
- *
- * @argc: represent arguement counter.
- * @argv: represents arguement vector.
- *
- * Return: 0 to show success.
+ * Return: Always 0 (Success).
  *
  */
+
+/** Function Signature**/
+int main(int argc, char *argv[]);
 
 int main(int argc, char *argv[])
 {
-	const char *filename;
+	const char *elf_file;
 	int fd;
-	Elf32_Ehdr hedr;
+	Elf64_Ehdr elf_hedr;
+	ssize_t bytes_scan;
+	int itr;
 
 	if (argc != 2)
-		exit_with_err("Usage: elf_header elf_filename");
+		ext_err("Usage: elf_demo ELF_file");
 
-	filename = argv[1];
-	fd = open(filename, O_RDONLY);
+	elf_file = argv[1];
 
+	fd = open(elf_file, O_RDONLY);
 	if (fd == -1)
-		exit_with_err("Error opening file");
+		ext_err("Error: can't open the ELF file.");
 
-	/*Read the ELF header*/
-	if (read(fd, &hedr, sizeof(hedr)) != sizeof(hedr))
-		exit_with_err("Error reading ELF header");
+	bytes_scan = read(fd, &elf_hedr, sizeof(Elf64_Ehdr));
 
-	/*Check if it's a valid ELF file*/
-	if (memcmp(hedr.e_ident, ELFMAG, SELFMAG) != 0)
-		exit_with_err("Not an ELF file");
+	if (bytes_scan == -1)
+		ext_err("Error: can't read from ELF file.");
 
-	/*Display the ELF header information*/
+	if (bytes_scan != sizeof(Elf64_Ehdr))
+		ext_err("Error: File is not a valid ELF file.");
+
+	if (memcmp(elf_hedr.e_ident, ELFMAG, SELFMAG) != 0)
+		ext_err("Error: File is not a valid ELF file.");
+
 	printf("ELF Header:\n");
-	output_elf_hedr(&hedr);
+	printf("  Magic:  ");
+
+	itr = 0;
+	while (itr < EI_NIDENT)
+	{
+		printf("%02X ", elf_hedr.e_ident[itr]);
+		itr++;
+	}
+	printf("\n");
+	printf("  Class:                             %s\n", (elf_hedr.e_ident[EI_CLASS] == ELFCLASS32) ? "ELF32" : "ELF64");
+	printf("  Data:                              %s\n", (elf_hedr.e_ident[EI_DATA] == ELFDATA2LSB) ? "2's complement, little endian" : "Unknown data format");
+	printf("  Version:                           %d (current)\n", elf_hedr.e_ident[EI_VERSION]);
+	printf("  OS/ABI:                            %d\n", elf_hedr.e_ident[EI_OSABI]);
+	printf("  ABI Version:                       %d\n", elf_hedr.e_ident[EI_ABIVERSION]);
+	printf("  Type:                              %u (EXEC)\n", elf_hedr.e_type);
+	printf("  Machine:                           %u\n", elf_hedr.e_machine);
+	printf("  Version:                           0x%08X\n", elf_hedr.e_version);
+	printf("  Entry point address:               0x%016lX\n", elf_hedr.e_entry);
 
 	close(fd);
 	return (0);
