@@ -30,7 +30,6 @@ void ext_err(const char *msg)
  *
  */
 
-/** Function Signature**/
 int main(int argc, char *argv[]);
 
 int main(int argc, char *argv[])
@@ -41,6 +40,8 @@ int main(int argc, char *argv[])
 	off_t elf_hedr_ofset;
 	ssize_t bytes_scan;
 	int itr;
+	int align_width = 29;
+	const char *data_info;
 
 	if (argc != 2)
 		ext_err("Usage: elf_demo ELF_file");
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
 		ext_err("Error: can't open the ELF file.");
 
 	elf_hedr_ofset = lseek(fd, 0, SEEK_SET);
-	if (elf_hedr_ofset == (off_t) - 1)
+	if (elf_hedr_ofset == (off_t) -1)
 		ext_err("Error: can't move elf_header using lseek");
 
 	bytes_scan = read(fd, &elf_hedr, sizeof(Elf64_Ehdr));
@@ -66,6 +67,8 @@ int main(int argc, char *argv[])
 	if (memcmp(elf_hedr.e_ident, ELFMAG, SELFMAG) != 0)
 		ext_err("Error: File is not a valid ELF file.");
 
+	data_info = (elf_hedr.e_ident[EI_DATA] == ELFDATA2LSB) ? "2's complement, little endian" : "Unknown data format";
+
 	printf("ELF Header:\n");
 	printf("  Magic:  ");
 
@@ -76,15 +79,15 @@ int main(int argc, char *argv[])
 		itr++;
 	}
 	printf("\n");
-	printf("  Class:                             %s\n", (elf_hedr.e_ident[EI_CLASS] == ELFCLASS32) ? "ELF32" : "ELF64");
-	printf("  Data:                              %s\n", (elf_hedr.e_ident[EI_DATA] == ELFDATA2LSB) ? "2's complement, little endian" : "Unknown data format");
-	printf("  Version:                           %d (current)\n", elf_hedr.e_ident[EI_VERSION]);
-	printf("  OS/ABI:                            %d\n", elf_hedr.e_ident[EI_OSABI]);
-	printf("  ABI Version:                       %d\n", elf_hedr.e_ident[EI_ABIVERSION]);
-	printf("  Type:                              %u (EXEC)\n", elf_hedr.e_type);
-	printf("  Machine:                           %u\n", elf_hedr.e_machine);
-	printf("  Version:                           0x%08X\n", elf_hedr.e_version);
-	printf("  Entry point address:               0x%016lX\n", elf_hedr.e_entry);
+	printf("  Class: %*s%s\n", 28, "", (elf_hedr.e_ident[EI_CLASS] == ELFCLASS32) ? "ELF32" : "ELF64");
+	printf("  Data: %*s%s\n", align_width, "", data_info);
+	printf("  Version: %*s%d (current)\n", 26, "", elf_hedr.e_ident[EI_VERSION]);
+	printf("  OS/ABI: %*s%d\n", 27, "",  elf_hedr.e_ident[EI_OSABI]);
+	printf("  ABI Version: %*s%d\n", 22, "",  elf_hedr.e_ident[EI_ABIVERSION]);
+	printf("  Type: %*s%u (EXEC)\n", 29, "",  elf_hedr.e_type);
+	printf("  Machine: %*s%u\n", 26, "",  elf_hedr.e_machine);
+	printf("  Version: %*s0x%08X\n", 26, "",  elf_hedr.e_version);
+	printf("  Entry point address: %*s0x%016lX\n", 14, "",  elf_hedr.e_entry);
 
 	close(fd);
 	return (0);
