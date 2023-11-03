@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
 	const char *elf_file;
 	int fd;
 	Elf64_Ehdr elf_hedr;
+	off_t elf_hedr_ofset;
 	ssize_t bytes_scan;
 	int itr;
 
@@ -49,6 +50,10 @@ int main(int argc, char *argv[])
 	fd = open(elf_file, O_RDONLY);
 	if (fd == -1)
 		ext_err("Error: can't open the ELF file.");
+
+	elf_hedr_ofset = lseek(fd, 0, SEEK_SET);
+	if (elf_hedr_ofset == (off_t) - 1)
+		ext_err("Error: can't move elf_header using lseek");
 
 	bytes_scan = read(fd, &elf_hedr, sizeof(Elf64_Ehdr));
 
