@@ -30,6 +30,7 @@ void ext_err(const char *msg)
  *
  */
 
+/**Function Signature**/
 int main(int argc, char *argv[]);
 
 int main(int argc, char *argv[])
@@ -42,6 +43,8 @@ int main(int argc, char *argv[])
 	int itr;
 	int align_width = 29;
 	const char *data_info;
+	int align_width2 = 28;
+	const char *class_info;
 
 	if (argc != 2)
 		ext_err("Usage: elf_demo ELF_file");
@@ -68,6 +71,7 @@ int main(int argc, char *argv[])
 		ext_err("Error: File is not a valid ELF file.");
 
 	data_info = (elf_hedr.e_ident[EI_DATA] == ELFDATA2LSB) ? "2's complement, little endian" : "Unknown data format";
+	class_info = (elf_hedr.e_ident[EI_CLASS] == ELFCLASS32) ? "ELF32" : "ELF64";
 
 	printf("ELF Header:\n");
 	printf("  Magic:  ");
@@ -79,7 +83,7 @@ int main(int argc, char *argv[])
 		itr++;
 	}
 	printf("\n");
-	printf("  Class: %*s%s\n", 28, "", (elf_hedr.e_ident[EI_CLASS] == ELFCLASS32) ? "ELF32" : "ELF64");
+	printf("  Class: %*s%s\n", align_width2, "", class_info);
 	printf("  Data: %*s%s\n", align_width, "", data_info);
 	printf("  Version: %*s%d (current)\n", 26, "", elf_hedr.e_ident[EI_VERSION]);
 	printf("  OS/ABI: %*s%d\n", 27, "",  elf_hedr.e_ident[EI_OSABI]);
