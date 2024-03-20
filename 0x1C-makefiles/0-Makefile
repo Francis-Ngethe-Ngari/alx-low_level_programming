@@ -1,0 +1,5 @@
+all: compile
+
+compile: main.c school.c
+	@echo "executing...."
+	gcc main.c school.c -o school
