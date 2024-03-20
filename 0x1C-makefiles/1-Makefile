@@ -1,6 +1,8 @@
-CC = gcc
-SRC := *.c
+all: compile
 
-all:
+CC = gcc
+SRC = $(wildcard *.c)
+
+compile:
 	@echo "executing...."
 	${CC} ${SRC} -o school
