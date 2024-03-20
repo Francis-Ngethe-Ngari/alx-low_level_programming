@@ -3,5 +3,5 @@ all: compile
 CC = gcc
 SRC = $(wildcard *.c)
 
-compile: main.c school.c
+compile:
 	${CC} ${SRC} -o school
