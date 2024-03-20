@@ -1,7 +1,6 @@
-all: compile
-
 CC = gcc
 SRC = $(wildcard *.c)
 
-compile:
+all:
+	@echo "executing...."
 	${CC} ${SRC} -o school
