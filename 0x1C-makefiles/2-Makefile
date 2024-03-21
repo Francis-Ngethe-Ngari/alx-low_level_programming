@@ -1,10 +1,7 @@
-# Defining Varibales
 CC = gcc
 SRC = main.c school.c
 OBJ = $(SRC: .c=.o)
 NAME = school
 
-# Define targets and their dependencies
 all: $(OBJ)
-	#command to create executable file
 	$(CC) $(OBJ) -o $(NAME)
