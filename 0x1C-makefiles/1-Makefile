@@ -1,7 +1,7 @@
-all: compile
-
 CC = gcc
-SRC := main.c school.c 
+SRC := main.c school.c
+
+all: compile
 
 compile: ${SRC}
 	@echo "executing...."
