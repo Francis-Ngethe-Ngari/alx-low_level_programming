@@ -5,8 +5,6 @@ OBJ = $(SRC: .c=.o)
 NAME = school
 
 # Define targets and their dependencies
-all: $(NAME)
-
-# Command to build target
-$(NAME): $(OBJ)
+all: $(OBJ)
+	#command to create executable file
 	$(CC) $(OBJ) -o $(NAME)
