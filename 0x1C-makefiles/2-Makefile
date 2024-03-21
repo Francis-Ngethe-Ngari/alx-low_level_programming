@@ -1,0 +1,12 @@
+# Defining Varibales
+CC = gcc
+SRC = main.c school.c
+OBJ = $(SRC: .c=.o)
+NAME = school
+
+# Define targets and their dependencies
+all: $(NAME)
+
+# Command to build target
+$(NAME): $(OBJ)
+	$(CC) $(OBJ) -o $(NAME)
