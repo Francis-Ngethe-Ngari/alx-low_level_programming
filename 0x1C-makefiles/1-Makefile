@@ -1,8 +1,8 @@
 CC = gcc
 SRC := main.c school.c
 
-all: compile
+all: school
 
-compile: ${SRC}
+school: ${SRC}
 	@echo "executing...."
-	${CC} ${SRC} -o school
+	${CC} $^ -o $@
