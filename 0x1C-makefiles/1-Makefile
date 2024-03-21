@@ -5,4 +5,4 @@ all: compile
 
 compile: ${SRC}
 	@echo "executing...."
-	${CC} ${SRC}-o school
+	${CC} ${SRC} -o school
